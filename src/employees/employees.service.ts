@@ -32,8 +32,8 @@ export class EmployeesService {
   }
 
   async findAll(paginationQuery: PaginationQueryDto) {
-    const take = paginationQuery.offset || 10;
-    const skip = paginationQuery.limit || 0;
+    const take = paginationQuery.limit || 10;
+    const skip = paginationQuery.offset || 0;
 
     const [result, total] = await this.employeeRepo.findAndCount({
       // relations: ['position'],
@@ -41,6 +41,8 @@ export class EmployeesService {
       skip,
       take,
     });
+
+    console.log(result);
 
     return {
       data: result,
@@ -61,13 +63,20 @@ export class EmployeesService {
   }
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
+    console.log(updateEmployeeDto);
     const employee = await this.employeeRepo.preload({
       id,
       ...updateEmployeeDto,
     });
 
+    console.log({ employee });
+
     if (!employee) {
       throw new NotFoundException(`Employee #${id} not found`);
+    }
+
+    if (updateEmployeeDto.position !== employee.position) {
+      employee.position = updateEmployeeDto.position;
     }
 
     return this.employeeRepo.save(employee);

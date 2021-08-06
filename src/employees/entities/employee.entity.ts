@@ -29,6 +29,7 @@ export class Employee {
 
   @ManyToOne(() => Position, (position: Position) => position.id, {
     eager: true,
+    cascade: true,
   })
   @JoinColumn({
     name: 'POSITION_ID',

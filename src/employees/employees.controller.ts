@@ -40,6 +40,14 @@ export class EmployeesController {
     return this.employeesService.update(id, updateEmployeeDto);
   }
 
+  @Post(':id')
+  updateFecth(
+    @Param('id') id: number,
+    @Body() updateEmployeeDto: UpdateEmployeeDto,
+  ) {
+    return this.employeesService.update(id, updateEmployeeDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.employeesService.remove(id);
