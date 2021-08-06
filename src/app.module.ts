@@ -6,9 +6,14 @@ import { AppService } from './app.service';
 import { EmployeesModule } from './employees/employees.module';
 import { PositionsModule } from './positions/positions.module';
 import appConfig from './config/app.config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'build'),
+    }),
     ConfigModule.forRoot({
       load: [appConfig],
     }),
