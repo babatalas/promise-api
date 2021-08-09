@@ -2,6 +2,7 @@ version: '3.7'
 services:
   postgres:
     image: postgres:13.3-alpine3.14
+    container_name: postgres
     ports:
       - '5432:5432'
     environment:
@@ -9,14 +10,13 @@ services:
       POSTGRES_PASSWORD: devpass
       POSTGRES_DB: promise-mmi
   promise-api:
-    build: .
-    container_name: promise-api-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: promise-api-prod
     depends_on:
       - postgres
     environment:
-      NODE_ENV: development
       WAIT_HOSTS: postgres:5432
     ports:
       - 8081:8081
-    volumes:
-      - .:/app
